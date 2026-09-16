@@ -1,3 +1,5 @@
 nsvenv
 .env
 .vscode
+logs
+Atrifacts
