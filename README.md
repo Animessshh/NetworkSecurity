@@ -53,30 +53,7 @@ The application accepts a CSV file containing website feature records and return
 
 ## System Architecture
 
-The project follows a modular architecture that separates data ingestion, validation, transformation, model training, and deployment.
-
-```mermaid
-flowchart TD
-    A[MongoDB Atlas] --> B[Data Ingestion]
-    B --> C[Feature Store]
-    C --> D[Train Test Split]
-    D --> E[Data Validation]
-    E --> F[Data Transformation]
-    F --> G[Model Training]
-    G --> H[Model Evaluation]
-    H --> I[MLflow and DagsHub]
-    H --> J[Saved Model and Preprocessor]
-    J --> K[FastAPI Application]
-    K --> L[Docker Image]
-    L --> M[Amazon ECR]
-    M --> N[Amazon EC2]
-    N --> O[Prediction API]
-
-    P[GitHub Repository] --> Q[GitHub Actions CI CD]
-    Q --> L
-    Q --> M
-    Q --> N
-```
+![Network Security ML Architecture](Image/system-architecture.png)
 
 ### Architecture overview
 
