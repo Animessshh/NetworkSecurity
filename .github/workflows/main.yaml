@@ -97,3 +97,15 @@ jobs:
       - name: Clean previous images and containers
         run: |
           docker system prune -f
+
+      - name: Replace running container
+        run: |
+          docker rm -f networksecurity || true
+
+          docker run -d \
+            --restart unless-stopped \
+            -p 8080:8000 \
+            --name networksecurity \
+            -e AWS_REGION=us-east-1 \
+            -e DAGSHUB_TOKEN="${{ secrets.DAGSHUB_TOKEN }}" \
+            "${{ secrets.AWS_ECR_LOGIN_URI }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest"
