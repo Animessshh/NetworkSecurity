@@ -1,7 +1,6 @@
 from networksecurity.utils.main_utils.utils import load_object
 from networksecurity.exception.exception import NetworkSecurityException
 from networksecurity.logging.logger import logging
-from networksecurity.pipeline.training_pipeline import TrainingPipeline
 from networksecurity.constants.training_pipeline import DATA_INGESTION_COLLECTION_NAME, DATA_INGESTION_DATABASE_NAME
 from networksecurity.utils.ml_utils.model.estimator import NetworkModel
 import sys
@@ -51,11 +50,14 @@ async def index():
 @app.get("/train")
 async def train_route():
     try:
-        train_pipeline=TrainingPipeline()
+        from networksecurity.pipeline.training_pipeline import TrainingPipeline
+
+        train_pipeline = TrainingPipeline()
         train_pipeline.run_pipeline()
+
         return Response("Training is Successful")
     except Exception as e:
-        raise NetworkSecurityException(e,sys)
+        raise NetworkSecurityException(e, sys)
     
 @app.post("/predict")
 async def predict_route(request: Request,file:UploadFile=File(...)):
