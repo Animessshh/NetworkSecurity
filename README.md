@@ -53,32 +53,42 @@ The application accepts a CSV file containing website feature records and return
 
 ## System Architecture
 
-The project follows a modular architecture that separates data processing, model training, and production inference.
+The project follows a modular architecture that separates data ingestion, validation, transformation, model training, and deployment.
 
 ```mermaid
 flowchart TD
-    A["Dataset / MongoDB Atlas"] --> B["Data Ingestion"]
-    B --> C["Feature Store"]
-    C --> D["Train-Test Split"]
-    D --> E["Data Validation"]
-    E --> F["Data Transformation"]
-    F --> G["Model Training"]
-    G --> H["Model Evaluation"]
-    H --> I["MLflow / DagsHub Tracking"]
-    H --> J["Saved Model and Preprocessor"]
-    J --> K["FastAPI Application"]
-    K --> L["Docker Image"]
-    L --> M["Amazon ECR"]
-    M --> N["Amazon EC2"]
-    O["GitHub Repository"] --> P["GitHub Actions CI/CD"]
-    P --> L
-    P --> M
-    P --> N
-    N --> Q["Prediction API"]
+    A[MongoDB Atlas] --> B[Data Ingestion]
+    B --> C[Feature Store]
+    C --> D[Train Test Split]
+    D --> E[Data Validation]
+    E --> F[Data Transformation]
+    F --> G[Model Training]
+    G --> H[Model Evaluation]
+    H --> I[MLflow and DagsHub]
+    H --> J[Saved Model and Preprocessor]
+    J --> K[FastAPI Application]
+    K --> L[Docker Image]
+    L --> M[Amazon ECR]
+    M --> N[Amazon EC2]
+    N --> O[Prediction API]
+
+    P[GitHub Repository] --> Q[GitHub Actions CI CD]
+    Q --> L
+    Q --> M
+    Q --> N
 ```
 
-The model development pipeline produces the artifacts required for inference. The deployment workflow builds and distributes a container image, which is then executed on EC2.
+### Architecture overview
 
+- **Data ingestion:** Retrieves data from MongoDB Atlas and prepares the dataset.
+- **Data validation:** Checks data quality and detects potential distribution drift.
+- **Data transformation:** Applies the fitted preprocessing pipeline.
+- **Model training:** Trains and evaluates classification algorithms.
+- **Experiment tracking:** Records model metrics through MLflow and DagsHub, where configured.
+- **API:** Uses FastAPI to accept CSV uploads and return predictions.
+- **Containerization:** Docker packages the application and its dependencies.
+- **Image registry:** Amazon ECR stores the built Docker image.
+- **Deployment:** Amazon EC2 runs the container, while GitHub Actions automates the deployment workflow.
 ## Tech Stack
 
 | Category | Technologies |
